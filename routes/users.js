@@ -11,7 +11,7 @@ router.post('/', function(req, res){
   var username = req.body.username;
   var password = req.body.password;
   console.log(username + ' ' + password);
-  res.end();
+  res.status(200).end();
 });
 
 module.exports = router;
