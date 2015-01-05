@@ -1,0 +1,29 @@
+<div class="container">
+	<div class="text-center">
+		<h1>Welcome to Breakfast Time</h1>
+	</div>
+	<div>
+		<form name="loginForm" class="form-horizontal" role="form" novalidate>
+			<div class="form-group">
+				<label for="username" class="col-sm-1 control-label">Username</label>
+				<div class="col-sm-10">
+					<input type="text" name="username" class="form-control" id="username" ng-model="username" required/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-sm-1 control-label">Password</label>
+				<div class="col-sm-10">
+					<input type="password" name="password" class="form-control" id="password" ng-model="password" required/>
+				</div>
+			</div>
+			<div class="form-group text-center">
+			    <div class="col-sm-offset-1 col-sm-10">
+			    	<input type="submit" class="btn btn-primary btn-lg" ng-disabled="loginForm.username.$invalid
+						|| loginForm.password.$invalid" ng-click="signIn()" value="Sign in"/>
+				</div>
+			</div>
+		</form>
+		<input type="button" class="btn btn-warning btn-sm" ng-click="signUp()" value="Don't you have a Breakfast Time account? Sign up now"/>
+	</div>
+	<footer-breakfast-time/>
+</div>

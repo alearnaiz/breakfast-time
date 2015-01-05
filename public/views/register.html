@@ -1,0 +1,25 @@
+<div class="container">
+	<div class="text-center">
+		<h1>Sign up</h1>
+	</div>
+	<div class="text-right">
+		<input type="button" class="btn btn-info" ng-click="goLogin()" value="Go back login"/>
+	</div>
+	<form name="registerForm" role="form" novalidate>
+		<div class="form-group">
+			<label for="username">Username</label>
+			<input type="text" name="username" class="form-control" ng-model="username" id="username" required/>
+		</div>
+		<div class="form-group">
+			<label for="email">Email</label>
+			<input type="email" name="email" class="form-control" ng-model="email" id="email" required/>
+		</div>
+		<div class="form-group">
+			<label for="password">Password</label>
+			<input type="password" name="password" class="form-control" ng-model="password" id="password" required/>
+		</div>
+		<input type="submit" class="btn btn-primary" ng-disabled="registerForm.username.$invalid
+			|| registerForm.email.$invalid || registerForm.password.$invalid" ng-click="signUp()" value="Submit"/>
+	</form>
+	<footer-breakfast-time/>
+</div>
