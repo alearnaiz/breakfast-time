@@ -2,36 +2,6 @@ var express = require('express');
 var mysql = require('../utils/connection');
 var router = express.Router();
 
-// POST /users
-router.post('/', function(req, res) {
-  var data = {
-    username: req.body.username,
-    email: req.body.email,
-    password: req.body.password,
-    startDate: new Date()
-  };
-  var connection = mysql.connect();
-  connection.query('INSERT INTO user SET ?', data, function(err) {
-    if (err) {
-      throw err;
-    }
-    res.status(201).end();
-  });
-  connection.end();
-});
-
-// PUT /users/:username     Updating the user’s end date, logic deleted
-router.put('/:username', function(req, res) {
-  var connection = mysql.connect();
-  connection.query('UPDATE user SET endDate = ? WHERE username = ?',[new Date(), req.params.username], function(err) {
-    if (err) {
-      throw err;
-    }
-    res.status(200).send();
-  });
-  connection.end();
-});
-
 // GET /users/login
 router.get('/login', function(req, res) {
   var connection = mysql.connect();
@@ -44,6 +14,37 @@ router.get('/login', function(req, res) {
     }else {
       res.status(200).send(false);
     }
+  });
+  connection.end();
+});
+
+// POST /users
+router.post('/', function(req, res) {
+  var data = {
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+    startDate: new Date()
+  };
+  var connection = mysql.connect();
+  connection.query('INSERT INTO user SET ?', data, function(err) {
+    if (err) {
+      res.status(202).send(false);
+    } else {
+      res.status(201).send(true);
+    }
+  });
+  connection.end();
+});
+
+// PUT /users/:username     Updating the user’s end date, logic deleted
+router.put('/:username', function(req, res) {
+  var connection = mysql.connect();
+  connection.query('UPDATE user SET endDate = ? WHERE username = ?',[new Date(), req.params.username], function(err) {
+    if (err) {
+      throw err;
+    }
+    res.status(200).send();
   });
   connection.end();
 });

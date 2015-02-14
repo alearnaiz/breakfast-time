@@ -3,12 +3,12 @@ var mysql = require('../utils/connection');
 var router = express.Router();
 
 // POST /users/:username/breakfasts
-router.post('/', function(req, res) {
+router.post('/:username/breakfasts', function(req, res) {
     var data = {
         user_username: req.params.username,
         startDate: new Date(),
-        food_id: req.body.food_id,
-        drink_id: req.body.drink_id
+        food_id: req.body.foodId,
+        drink_id: req.body.drinkId
     };
     var connection = mysql.connect();
     connection.query('INSERT INTO breakfast SET ?', data, function(err) {
@@ -21,9 +21,9 @@ router.post('/', function(req, res) {
 });
 
 // GET /users/:username/breakfasts/active
-router.get('/active', function(req, res) {
+router.get('/:username/breakfasts/active', function(req, res) {
     var connection = mysql.connect();
-    connection.query('SELECT * FROM breakfast WHERE user_username = ? AND endDate IS NULL',
+    connection.query('SELECT food.name, drink.name FROM breakfast LEFT JOIN food ON breakfast.food_id = food.id LEFT JOIN drink ON breakfast.drink_id = drink.id WHERE user_username = ? AND endDate IS NULL',
         [req.params.username], function(err, rows) {
             if (err) {
                 throw err;
