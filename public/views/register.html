@@ -3,7 +3,7 @@
 		<h1>Sign up</h1>
 	</div>
 	<div class="text-right">
-		<input type="button" class="btn btn-info" ng-click="goLogin()" value="Go back login"/>
+		<input type="button" class="btn btn-info" ng-click="goLogin()" value="Go back to login"/>
 	</div>
 	<form name="registerForm" role="form" novalidate>
 		<div class="form-group">
@@ -21,5 +21,14 @@
 		<input type="submit" class="btn btn-primary" ng-disabled="registerForm.username.$invalid
 			|| registerForm.email.$invalid || registerForm.password.$invalid" ng-click="signUp()" value="Submit"/>
 	</form>
+	<br/>
+	<div ng-if="registerError" class="alert alert-danger" role="alert">
+		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		<span class="sr-only">Error:</span>
+		Username or email are already registered
+	</div>
+	<div ng-if="registerSuccess" class="alert alert-success" role="alert">
+		<b>Well done!</b> You have just registered. Go to login and sign in
+	</div>
 	<footer-breakfast-time/>
 </div>

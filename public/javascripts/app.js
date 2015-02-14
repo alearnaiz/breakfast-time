@@ -17,6 +17,14 @@
 				controller: 'registerCtrl',
 				templateUrl: 'views/register.html'
 			})
+			.when('/home', {
+				controller: 'homeCtrl',
+				templateUrl: 'views/home.html'
+			})
+			.when('/create-breakfast', {
+				controller: 'createBreakfastCtrl',
+				templateUrl: 'views/createBreakfast.html'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});

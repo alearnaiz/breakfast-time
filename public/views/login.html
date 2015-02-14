@@ -23,6 +23,11 @@
 				</div>
 			</div>
 		</form>
+		<div ng-if="loginError" class="alert alert-danger" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			Username or password not valid
+		</div>
 		<input type="button" class="btn btn-warning btn-sm" ng-click="signUp()" value="Don't you have a Breakfast Time account? Sign up now"/>
 	</div>
 	<footer-breakfast-time/>
