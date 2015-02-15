@@ -69,13 +69,27 @@
 				return deferred.promise;
 			}
 
+			function editBreakfast(username, breakfastId, foodId, drinkId) {
+				var deferred = $q.defer();
+				var requestContent = {
+					foodId: foodId,
+					drinkId: drinkId
+				};
+				$http.put('/users/'+username+'/breakfasts/'+breakfastId, requestContent)
+					.success(function (data) {
+						deferred.resolve(data);
+					});
+				return deferred.promise;
+			}
+
 			return {
 				login: login,
 				createUser: createUser,
 				getActiveBreakfast: getActiveBreakfast,
 				getFoods: getFoods,
 				getDrinks: getDrinks,
-				createBreakfast: createBreakfast
+				createBreakfast: createBreakfast,
+				editBreakfast: editBreakfast
 			};
 
 		}]);

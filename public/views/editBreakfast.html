@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="text-center">
-		<h1>Create new breakfast</h1>
+		<h1>Edit your breakfast</h1>
 	</div>
 	<div class="text-right">
 		<input type="button" class="btn btn-info" ng-click="goHome()" value="Go back to home"/>
@@ -8,19 +8,21 @@
 	<form role="form">
 		<div class="form-group">
 			<label for="foods">Choose food</label>
-			<select ng-model="myFood" ng-options="food.name for food in foods" class="form-control" id="foods">
+			<select ng-model="breakfast.foodId" class="form-control" id="foods">
 				<option value="">-- Choose food --</option>
+				<option ng-repeat="food in foods" value="{{food.id}}">{{food.name}}</option>
 			</select>
 		</div>
 
 		<div class="form-group">
 			<label for="drinks">Choose drink</label>
-			<select ng-model="myDrink" ng-options="drink.name for drink in drinks" class="form-control" id="drinks">
+			<select ng-model="breakfast.drinkId" class="form-control" id="drinks">
 				<option value="">-- Choose drink --</option>
+				<option ng-repeat="drink in drinks" value="{{drink.id}}">{{drink.name}}</option>
 			</select>
 		</div>
 
-		<input type="submit" class="btn btn-primary" ng-click="createBreakfast()" value="Create"/>
+		<input type="submit" class="btn btn-primary" ng-click="editBreakfast()" value="Edit"/>
 	</form>
 
 	<footer-breakfast-time/>

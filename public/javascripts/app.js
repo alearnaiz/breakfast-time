@@ -25,6 +25,10 @@
 				controller: 'createBreakfastCtrl',
 				templateUrl: 'views/createBreakfast.html'
 			})
+			.when('/edit-breakfast', {
+				controller: 'editBreakfastCtrl',
+				templateUrl: 'views/editBreakfast.html'
+			})
 			.otherwise({
 				redirectTo: '/'
 			});
