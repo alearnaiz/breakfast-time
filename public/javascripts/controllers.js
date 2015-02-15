@@ -24,24 +24,22 @@
 			};
 
 		}])
-		.controller('registerCtrl', ['$scope', '$location', 'breakfastTimeService', function($scope, $location, breakfastTimeService) {
+		.controller('registerCtrl', ['$scope', '$location', '$window', 'breakfastTimeService', function($scope, $location, $window, breakfastTimeService) {
 
 			$scope.username = '';
 			$scope.email = '';
 			$scope.password = '';
 			$scope.registerError = false;
-			$scope.registerSuccess = false;
 
 			$scope.signUp = function(){
 				breakfastTimeService.createUser($scope.username, $scope.email, $scope.password).then(function (data) {
 					if (data) {
 						// if register is right
-						$scope.registerSuccess = true;
-						$scope.registerError = false;
+						$window.localStorage.setItem('username', $scope.username);
+						$location.path('/home');
 					} else {
 						// if register fails
 						$scope.registerError = true;
-						$scope.registerSuccess = false;
 					}
 
 				});

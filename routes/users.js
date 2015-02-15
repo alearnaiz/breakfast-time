@@ -5,7 +5,7 @@ var router = express.Router();
 // GET /users/login
 router.get('/login', function(req, res) {
   var connection = mysql.connect();
-  connection.query('SELECT * FROM user WHERE username = ? AND password = ?',[req.query.username, req.query.password], function(err, rows) {
+  connection.query('SELECT username FROM user WHERE username = ? AND password = ?',[req.query.username, req.query.password], function(err, rows) {
     if (err) {
       throw err;
     }
