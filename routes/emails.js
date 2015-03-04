@@ -24,6 +24,19 @@ router.post('/send', function(req, res) {
 
             if (user.length > 0) {
 
+                // Inserting a leader in the leader log table
+                var leaderLog  = {
+                    startDate: new Date(),
+                    user_username: user[0].username
+                };
+
+                connection.query('INSERT INTO leader_log SET ?', leaderLog, function(err) {
+                    if (err) {
+                        throw err;
+                    }
+                });
+                connection.end();
+
                 // Sending the email
                 var smtpTransport = nodemailer.createTransport({
                     service: 'xxxx',
@@ -45,7 +58,7 @@ router.post('/send', function(req, res) {
                         throw err;
                     }
                 });
-                res.status(200).send();
+                res.status(200).send(user[0].username);
             } else {
                 res.status(204).send();
             }
@@ -58,7 +71,6 @@ router.post('/send', function(req, res) {
             }
         });
 
-        connection.end();
     });
 
 });
@@ -106,12 +118,12 @@ function getHtmlBody(breakfasts, username) {
         }
     });
     html = html + '<br/><b>Order summary:</b>';
-    html = html + '<br/>For eating<ul>';
+    html = html + '<br/><br/>For eating:<ul>';
     for (var index in orderSummary.foods) {
         html = html + '<li>' + index + ': ' + orderSummary.foods[index] + '</li>';
     }
     html = html + '</ul>';
-    html = html + 'For drinking<ul>';
+    html = html + 'For drinking:<ul>';
     for (var index in orderSummary.drinks) {
         html = html + '<li>' + index + ': ' + orderSummary.drinks[index] + '</li>';
     }

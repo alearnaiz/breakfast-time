@@ -4,8 +4,9 @@ var router = express.Router();
 
 // GET /users/login
 router.get('/login', function(req, res) {
+  var encodePassword = new Buffer(req.query.password).toString('base64');
   var connection = mysql.connect();
-  connection.query('SELECT username FROM user WHERE username = ? AND password = ?',[req.query.username, req.query.password], function(err, rows) {
+  connection.query('SELECT username FROM user WHERE username = ? COLLATE utf8_bin AND password = ? COLLATE utf8_bin',[req.query.username, encodePassword], function(err, rows) {
     if (err) {
       throw err;
     }
@@ -20,14 +21,15 @@ router.get('/login', function(req, res) {
 
 // POST /users
 router.post('/', function(req, res) {
-  var data = {
+  var encodePassword = new Buffer(req.body.password).toString('base64');
+  var user = {
     username: req.body.username,
     email: req.body.email,
-    password: req.body.password,
+    password: encodePassword,
     startDate: new Date()
   };
   var connection = mysql.connect();
-  connection.query('INSERT INTO user SET ?', data, function(err) {
+  connection.query('INSERT INTO user SET ?', user, function(err) {
     if (err) {
       res.status(202).send(false);
     } else {

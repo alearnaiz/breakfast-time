@@ -4,14 +4,14 @@ var router = express.Router();
 
 // POST /users/:username/breakfasts
 router.post('/:username/breakfasts', function(req, res) {
-    var data = {
+    var breakfast = {
         user_username: req.params.username,
         startDate: new Date(),
         food_id: req.body.foodId,
         drink_id: req.body.drinkId
     };
     var connection = mysql.connect();
-    connection.query('INSERT INTO breakfast SET ?', data, function(err) {
+    connection.query('INSERT INTO breakfast SET ?', breakfast, function(err) {
         if (err) {
             throw err;
         }
