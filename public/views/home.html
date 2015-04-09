@@ -38,6 +38,9 @@
 			<button type="button" class="btn btn-default" ng-click="createBreakfast()">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new breakfast
 			</button>
+			<div ng-if="canReactiveBreakfast" class="text-right pull-right">
+				<input type="button" class="btn btn-warning btn-sm" ng-click="reactiveBreakfast()" value="Use last breakfast"/>
+			</div>
 		</div>
 	</div>
 	<footer-breakfast-time/>

@@ -48,4 +48,30 @@ router.get('/:username/breakfasts/active', function(req, res) {
     connection.end();
 });
 
+// GET /users/:username/breakfasts/last
+router.get('/:username/breakfasts/last', function(req, res) {
+    var connection = mysql.connect();
+    connection.query('SELECT breakfast.id AS breakfastId, breakfast.food_id AS foodId, food.name AS foodName, breakfast.drink_id AS drinkId, drink.name AS drinkName FROM breakfast LEFT JOIN food ON breakfast.food_id = food.id LEFT JOIN drink ON breakfast.drink_id = drink.id WHERE user_username = ? ORDER BY startDate DESC LIMIT 1',
+        [req.params.username], function(err, rows) {
+            if (err) {
+                throw err;
+            }
+            res.status(200).send(rows);
+        });
+    connection.end();
+});
+
+// PUT /users/:username/breakfasts/:id/reactive
+router.put('/:username/breakfasts/:id/reactive', function(req, res) {
+    var breakfastId = req.params.id;
+    var connection = mysql.connect();
+    connection.query('UPDATE breakfast SET endDate = NULL WHERE id = ?', [breakfastId], function(err) {
+        if (err) {
+            throw err;
+        }
+        res.status(200).end();
+    });
+    connection.end();
+});
+
 module.exports = router;

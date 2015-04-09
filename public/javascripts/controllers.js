@@ -55,6 +55,9 @@
 			if (!$window.localStorage.getItem('username')) {
 				$location.path('/');
 			} else {
+
+				var lastBreakfast;
+
 				$scope.signOut = function(){
 					$window.localStorage.clear();
 					$location.path('/');
@@ -62,7 +65,16 @@
 
 				breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function (data) {
 					if (data.length > 0) {
+						// if breakfast exists
 						$scope.breakfast = data[0];
+					} else {
+						// if breakfast doesn't exist
+						breakfastTimeService.getLastBreakfast($window.localStorage.getItem('username')).then(function (data) {
+							if (data.length > 0) {
+								$scope.canReactiveBreakfast = true;
+								lastBreakfast = data[0];
+							}
+						});
 					}
 				});
 
@@ -73,6 +85,12 @@
 				$scope.editBreakfast = function() {
 					$location.path('/edit-breakfast');
 				};
+
+				$scope.reactiveBreakfast = function() {
+					breakfastTimeService.reactiveBreakfast($window.localStorage.getItem('username'), lastBreakfast.breakfastId).then(function (data) {
+						$scope.breakfast = lastBreakfast;
+					});
+				};
 			}
 
 		}])
@@ -80,7 +98,6 @@
 			if (!$window.localStorage.getItem('username')) {
 				$location.path('/');
 			} else {
-
 				breakfastTimeService.getFoods().then(function (data) {
 					$scope.foods = data;
 				});
@@ -115,23 +132,20 @@
 			if (!$window.localStorage.getItem('username')) {
 				$location.path('/');
 			} else {
-
 				breakfastTimeService.getFoods().then(function (data) {
 					$scope.foods = data;
-				});
-
-				breakfastTimeService.getDrinks().then(function (data) {
-					$scope.drinks = data;
-				});
-
-				breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function (data) {
-					$scope.breakfast = data[0];
-					if (!$scope.breakfast.foodId) {
-						$scope.breakfast.foodId = '';
-					}
-					if (!$scope.breakfast.drinkId) {
-						$scope.breakfast.drinkId = '';
-					}
+					breakfastTimeService.getDrinks().then(function (data) {
+						$scope.drinks = data;
+						breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function (data) {
+							$scope.breakfast = data[0];
+							if (!$scope.breakfast.foodId) {
+								$scope.breakfast.foodId = '';
+							}
+							if (!$scope.breakfast.drinkId) {
+								$scope.breakfast.drinkId = '';
+							}
+						});
+					});
 				});
 
 				$scope.goHome = function(){
