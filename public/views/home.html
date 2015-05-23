@@ -39,8 +39,21 @@
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create new breakfast
 			</button>
 			<div ng-if="canReactiveBreakfast" class="text-right pull-right">
-				<input type="button" class="btn btn-warning btn-sm" ng-click="reactiveBreakfast()" value="Use last breakfast"/>
+				<input type="button" class="btn btn-warning btn-sm" ng-click="repeatLastBreakfast()" value="Repeat the last breakfast"/>
 			</div>
+		</div>
+	</div>
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			Who has already ordered
+		</div>
+		<ul class="list-group" ng-if="users">
+			<li class="list-group-item" ng-if="users" ng-repeat="user in users">{{user.username}}</li>
+		</ul>
+		<div class="panel-body" ng-if="!users">
+			<p>
+				Nobody has ordered yet
+			</p>
 		</div>
 	</div>
 	<footer-breakfast-time/>

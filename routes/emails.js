@@ -77,7 +77,7 @@ router.post('/send', function(req, res) {
 
 function getHtmlBody(breakfasts, username) {
     var html = 'Hello ' + username + ',<br/><br/>' +
-    "As a breakfast's leader, you should call to Meridia (0971439343). Your colleges are hungry and waiting for this order:" +
+    "As the leader of the breakfast, you should call to Meridia (0971439343). Your colleges are hungry and waiting for this order:" +
     '<ul>';
 
     // Order by person

@@ -91,9 +91,18 @@
 				return deferred.promise;
 			}
 
-			function reactiveBreakfast(username, breakfastId) {
+			function repeatLastBreakfast(username, breakfastId) {
 				var deferred = $q.defer();
 				$http.put('/users/'+username+'/breakfasts/'+breakfastId+'/reactive')
+					.success(function() {
+						deferred.resolve();
+					});
+				return deferred.promise;
+			}
+
+			function getUsersWithActiveBreakfast() {
+				var deferred = $q.defer();
+				$http.get('/users/active-breakfast')
 					.success(function (data) {
 						deferred.resolve(data);
 					});
@@ -109,7 +118,8 @@
 				createBreakfast: createBreakfast,
 				editBreakfast: editBreakfast,
 				getLastBreakfast: getLastBreakfast,
-				reactiveBreakfast: reactiveBreakfast
+				repeatLastBreakfast: repeatLastBreakfast,
+				getUsersWithActiveBreakfast : getUsersWithActiveBreakfast
 			};
 
 		}]);

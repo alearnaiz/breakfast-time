@@ -51,4 +51,16 @@ router.put('/:username', function(req, res) {
   connection.end();
 });
 
+// GET /users/active-breakfast  Getting all users with an active breakfast
+router.get('/active-breakfast', function(req, res) {
+  var connection = mysql.connect();
+  connection.query('SELECT username FROM user INNER JOIN breakfast ON user.username = breakfast.user_username WHERE user.endDate IS NULL AND breakfast.endDate IS NULL', function(err, rows) {
+    if (err) {
+      throw err;
+    }
+    res.status(200).send(rows);
+  });
+  connection.end();
+});
+
 module.exports = router;

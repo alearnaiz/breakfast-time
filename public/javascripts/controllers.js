@@ -1,28 +1,30 @@
 (function(){
 	angular.module('breakfastTime.controllers', [])
 		.controller('loginCtrl', ['$scope', '$location', '$window', 'breakfastTimeService', function($scope, $location, $window, breakfastTimeService) {
+			if ($window.localStorage.getItem('username')) {
+				$location.path('/home');
+			} else {
+				$scope.username = '';
+				$scope.password = '';
+				$scope.loginError = false;
 
-			$scope.username = '';
-			$scope.password = '';
-			$scope.loginError = false;
+				$scope.signIn = function(){
+					breakfastTimeService.login($scope.username, $scope.password).then(function(data) {
+						if (data) {
+							// if login is right
+							$window.localStorage.setItem('username',data[0].username);
+							$location.path('/home');
+						} else {
+							// if login fails
+							$scope.loginError = true;
+						}
+					});
+				};
 
-			$scope.signIn = function(){
-				breakfastTimeService.login($scope.username, $scope.password).then(function (data) {
-					if (data) {
-						// if login is right
-						$window.localStorage.setItem('username',data[0].username);
-						$location.path('/home');
-					} else {
-						// if login fails
-						$scope.loginError = true;
-					}
-				});
-			};
-					
-			$scope.signUp = function(){
-				$location.path('/register');
-			};
-
+				$scope.signUp = function(){
+					$location.path('/register');
+				};
+			}
 		}])
 		.controller('registerCtrl', ['$scope', '$location', '$window', 'breakfastTimeService', function($scope, $location, $window, breakfastTimeService) {
 
@@ -32,7 +34,7 @@
 			$scope.registerError = false;
 
 			$scope.signUp = function(){
-				breakfastTimeService.createUser($scope.username, $scope.email, $scope.password).then(function (data) {
+				breakfastTimeService.createUser($scope.username, $scope.email, $scope.password).then(function(data) {
 					if (data) {
 						// if register is right
 						$window.localStorage.setItem('username', $scope.username);
@@ -63,18 +65,24 @@
 					$location.path('/');
 				};
 
-				breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function (data) {
+				breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function(data) {
 					if (data.length > 0) {
 						// if breakfast exists
 						$scope.breakfast = data[0];
 					} else {
 						// if breakfast doesn't exist
-						breakfastTimeService.getLastBreakfast($window.localStorage.getItem('username')).then(function (data) {
+						breakfastTimeService.getLastBreakfast($window.localStorage.getItem('username')).then(function(data) {
 							if (data.length > 0) {
 								$scope.canReactiveBreakfast = true;
 								lastBreakfast = data[0];
 							}
 						});
+					}
+				});
+
+				breakfastTimeService.getUsersWithActiveBreakfast().then(function(data) {
+					if (data.length > 0) {
+						$scope.users = data;
 					}
 				});
 
@@ -86,9 +94,9 @@
 					$location.path('/edit-breakfast');
 				};
 
-				$scope.reactiveBreakfast = function() {
-					breakfastTimeService.reactiveBreakfast($window.localStorage.getItem('username'), lastBreakfast.breakfastId).then(function (data) {
-						$scope.breakfast = lastBreakfast;
+				$scope.repeatLastBreakfast = function() {
+					breakfastTimeService.repeatLastBreakfast($window.localStorage.getItem('username'), lastBreakfast.breakfastId).then(function() {
+						$window.location.reload();
 					});
 				};
 			}
@@ -111,9 +119,9 @@
 				};
 
 				$scope.createBreakfast = function() {
-					var username = $window.localStorage.getItem('username');
-					var foodId;
-					var drinkId;
+					var username = $window.localStorage.getItem('username'),
+						foodId,
+						drinkId;
 					if ($scope.myFood) {
 						foodId = $scope.myFood.id;
 					}
@@ -122,7 +130,7 @@
 						drinkId = $scope.myDrink.id;
 					}
 
-					breakfastTimeService.createBreakfast(username, foodId, drinkId).then(function () {
+					breakfastTimeService.createBreakfast(username, foodId, drinkId).then(function() {
 						$location.path('/home');
 					});
 				};
@@ -136,7 +144,7 @@
 					$scope.foods = data;
 					breakfastTimeService.getDrinks().then(function (data) {
 						$scope.drinks = data;
-						breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function (data) {
+						breakfastTimeService.getActiveBreakfast($window.localStorage.getItem('username')).then(function(data) {
 							$scope.breakfast = data[0];
 							if (!$scope.breakfast.foodId) {
 								$scope.breakfast.foodId = '';
@@ -153,10 +161,10 @@
 				};
 
 				$scope.editBreakfast = function() {
-					var username = $window.localStorage.getItem('username');
-					var breakfastId = $scope.breakfast.breakfastId;
-					var foodId;
-					var drinkId;
+					var username = $window.localStorage.getItem('username'),
+						breakfastId = $scope.breakfast.breakfastId,
+						foodId,
+						drinkId;
 					if ($scope.breakfast.foodId) {
 						foodId = $scope.breakfast.foodId;
 					}
